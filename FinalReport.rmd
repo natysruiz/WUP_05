@@ -29,9 +29,18 @@ Data for this study came from a clinical trial for the drug triumpscal.
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
 
+Because the question is about drug user; we have to subset the data to 
+include only druggies.
+
+The graphical display will be bar plot. the numerical display will be 
+a cross table, and the inferential display will be a chisq test.
+
 # Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+```{r}
+DruggieData = filter(triUmp , DrugUser == "yes")
+```
 
 ## Descriptive Results
 
@@ -39,15 +48,34 @@ Data for this study came from a clinical trial for the drug triumpscal.
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
+```{r}
+barchartGC(~infected + treatment,data=DruggieData)
+barchartGC(~infected + treatment,data=DruggieData, type="percent")
+
+```
+
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r}
+table1 <- xtabs(~infected+treatment, data=DruggieData)
+rowPerc(table1)
+colPerc(table1)
+```
+
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
-
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+For the fisher exact test shows if you get the vaccine you are 0.35 times likey to get aids.
+The chisq test has a p-value 0.0000001242 and I reject the null hypothesis because it is so small proving there is relationship between getting the vaccine and not receieving aids
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+Rejecting the null hypothesis because the drug is more effective in preventing aids than the placebo.
